@@ -92,11 +92,17 @@ const createChatCompletion = async (
 	return JSON.parse(data) as CreateChatCompletionResponse;
 };
 
-const sanitizeMessage = (message: string) => message
-	.trim()
-	.replace(/[\n\r]/g, '')
-	.replace(/(\w)\.$/, '$1')
-	.toLowerCase();
+const sanitizeMessage = (message: string) => {
+	let sanitized = message
+		.trim()
+		.replace(/[\n\r]/g, '')
+		.replace(/(\w)\.$/, '$1')
+		.toLowerCase();
+	if (sanitized?.[0] === sanitized?.[0].toUpperCase()) {
+		sanitized = sanitized[0].toLowerCase() + sanitized.slice(1);
+	}
+	return sanitized;
+};
 
 const deduplicateMessages = (array: string[]) => Array.from(new Set(array));
 
